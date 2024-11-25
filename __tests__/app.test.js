@@ -53,7 +53,7 @@ describe("GET /api/article/article_id", () => {
       .get("/api/article/1")
       .expect(200)
       .then(({ body: { article } }) => {
-        console.log({ body: { article } })
+        console.log({ body: { article } });
         expect(article).toMatchObject({
           author: expect.any(String),
           title: expect.any(String),
@@ -82,6 +82,39 @@ describe("GET /api/article/article_id", () => {
       .then(({ body }) => {
         const { msg } = body;
         expect(msg).toBe("Error - article not found");
+      });
+  });
+});
+
+describe("GET /api/articles", () => {
+  test("200: Responds with: an articles array of article objects with properties: author, title, article_id, topic, created_at, votes, article_img_url, and comment_count. The articles should be sorted by date in descending order", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        articles.forEach((article) => {
+          expect(article).toMatchObject({
+            author: expect.any(String),
+            title: expect.any(String),
+            article_id: expect.any(Number),
+            topic: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+            article_img_url: expect.any(String),
+            comment_count: expect.any(String),
+          });
+          expect(article).not.toHaveProperty("body");
+          expect(articles).toBeSortedBy("created_at", { descending: true });
+        });
+      });
+  });
+  test("404: Responds with a 'not found' error msg for an attempt to use an valid path that does not exist ", () => {
+    return request(app)
+      .get("/api/articles_path_does_not_exist")
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Error - not found");
       });
   });
 });
