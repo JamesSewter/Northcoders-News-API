@@ -76,5 +76,18 @@
         }
       ]
     }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "Validates a users comment, then inserts to the table of comments, and finally responds with the posted comment.",
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 19,
+        "body": "The sixth sick sheik's sixth sheep's sick",
+        "article_id": 1,
+        "author": "rogersop",
+        "votes": 0,
+        "created_at": "2024-11-26T16:26:33.344Z"
+      }
+    }
   }
 }

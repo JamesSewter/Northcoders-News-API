@@ -9,7 +9,7 @@ exports.fetchArticlesComments = (article_id) => {
   });
 };
 
-exports.fetchArticleById = (article_id) => {
+exports.checkArticleById = (article_id) => {
   const sqlQuery = `SELECT * FROM articles WHERE article_id = $1 `;
   const queryValues = [article_id];
 
@@ -22,3 +22,14 @@ exports.fetchArticleById = (article_id) => {
     }
   });
 };
+
+exports.insertComment = (article_id, username, body) => {
+  const sqlQuery = `INSERT INTO comments (body, votes, author, article_id, created_at) 
+  VALUES ($1, $2, $3, $4, $5)
+  RETURNING *;`
+  const queryValues = [body, 0, username, article_id, new Date]
+
+  return db.query(sqlQuery, queryValues).then(({rows}) => {
+    return rows[0]
+  })
+}
