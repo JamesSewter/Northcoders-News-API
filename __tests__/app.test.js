@@ -164,3 +164,58 @@ describe("GET /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test("201: Responds with the posted comment", () => {
+    const newComment = {
+      username: "rogersop",
+      body: "The sixth sick sheik's sixth sheep's sick",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body: { comment } }) => {
+        console.log({ body: { comment } })
+        console.log(comment)
+        expect(comment).toMatchObject({
+          body: "The sixth sick sheik's sixth sheep's sick",
+          votes: expect.any(Number),
+          author: "rogersop",
+          article_id: 1,
+          created_at: expect.any(String),
+        });
+      });
+  });
+  test("400: Respond with bad request error msg for when missing username/body in new comment", () => {
+    const newComment = {
+      username: "",
+      body: "The sixth sick sheik's sixth sheep's sick",
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Error - username and body are required");
+      });
+  })
+  test("400: Respond with bad request error msg for when username/body are invalid (not strings)", () => {
+    const newComment = {
+      username: 12312,
+      body: 314273981,
+    };
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Error - invalid data type");
+      });
+  })
+  //404 err path already tested
+});
+
+
