@@ -1,7 +1,9 @@
 const {
   fetchArticlesComments,
   checkArticleById,
-  insertComment
+  insertComment,
+  checkCommentExists,
+  removeComment,
 } = require("../models/api.articles.comments.model");
 
 exports.getArticlesComments = (req, res, next) => {
@@ -44,4 +46,21 @@ exports.postComment = (req, res, next) => {
       res.status(201).send({ comment });
     })
   );
+};
+
+exports.deleteComment = (req, res, next) => {
+  const comment_id = req.params.comment_id;
+  if (isNaN(comment_id)) {
+    return next({
+      status: 400,
+      msg: "Error - invalid comment_id",
+    });
+  }
+  checkCommentExists(comment_id)
+    .then(() => {
+      removeComment(comment_id).then(() => {
+        res.status(204).send();
+      });
+    })
+    .catch(next);
 };
