@@ -8,7 +8,7 @@ const {
 const { getArticles } = require("./controllers/api.articles.controller");
 const {
   getArticlesComments,
-  postComment,
+  postComment, deleteComment
 } = require("./controllers/api.articles.comments.controller");
 
 const app = express();
@@ -27,6 +27,8 @@ app.get("/api/articles/:article_id/comments", getArticlesComments);
 app.post("/api/articles/:article_id/comments", postComment);
 
 app.patch("/api/articles/:article_id", patchArticleVotes);
+
+app.delete("/api/comments/:comment_id", deleteComment)
 
 app.use((req, res, next) => {
   res.status(404).send({ msg: "Error - not found" });

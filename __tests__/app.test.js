@@ -273,3 +273,40 @@ describe("PATCH /api/articles/:article_id", () => {
       });
   });
 });
+
+describe("DELETE /api/comments/:comment_id", () => {
+  test("204: Deletes the specified comment and responds with no content", () => {
+    const comment_id = 1;
+    return request(app)
+      .delete(`/api/comments/${comment_id}`)
+      .expect(204)
+      .then(() => {
+        const sqlQuery = `SELECT * FROM comments WHERE comment_id = $1`;
+        const queryValues = [comment_id];
+        return db.query(sqlQuery, queryValues).then(({ rows }) => {
+          expect(rows).toHaveLength(0);
+        });
+      });
+  });
+  test("400: Respond with bad request error msg for when comment_id is invalid", () => {
+    const comment_id = "notANumber";
+    return request(app)
+      .delete(`/api/comments/${comment_id}`)
+      .expect(400)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Error - invalid comment_id");
+      });
+  });
+  test("404: Respond with not found error msg for when comment_id does not exist", () => {
+    const comment_id = 999;
+    return request(app)
+      .delete(`/api/comments/${comment_id}`)
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Error - comment not found");
+      });
+  });
+});
+

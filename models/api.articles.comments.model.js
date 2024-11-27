@@ -33,3 +33,24 @@ exports.insertComment = (article_id, username, body) => {
     return rows[0]
   })
 }
+
+
+exports.checkCommentExists = (comment_id) => {
+  const sqlQuery = `SELECT * FROM comments WHERE comment_id = $1 `;
+  const queryValues = [comment_id];
+  return db.query(sqlQuery, queryValues).then(({ rows }) => {
+    if (!rows.length) {
+      return Promise.reject({
+        status: 404,
+        msg: "Error - comment not found",
+      });
+    }
+  });
+}
+
+exports.removeComment = (comment_id) => {
+  const sqlQuery = `DELETE FROM comments WHERE comment_id = $1 RETURNING *`;
+  const queryValues = [comment_id];
+
+  return db.query(sqlQuery, queryValues)
+}

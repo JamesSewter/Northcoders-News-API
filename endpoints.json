@@ -102,5 +102,9 @@
       "votes": 120,
       "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
     }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "Deletes the specified comment and responds with no content",
+    "exampleResponse": "No response - only 204 status code on completion"
   }
 }
