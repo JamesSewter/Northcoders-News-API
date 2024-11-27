@@ -42,7 +42,7 @@ describe("GET /api/topics", () => {
       .expect(404)
       .then(({ body }) => {
         const { msg } = body;
-        expect(msg).toBe("Error - not found");
+        expect(msg).toBe("Not found");
       });
   });
 });
@@ -113,7 +113,7 @@ describe("GET /api/articles", () => {
       .expect(404)
       .then(({ body }) => {
         const { msg } = body;
-        expect(msg).toBe("Error - not found");
+        expect(msg).toBe("Not found");
       });
   });
 });
@@ -310,3 +310,28 @@ describe("DELETE /api/comments/:comment_id", () => {
   });
 });
 
+describe("GET /api/users", () => {
+  test("200: Responds with an array of user objects, each user object should have the following properties: username, name, avatar_url", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body: { users } }) => {
+        users.forEach((user) => {
+          expect(user).toMatchObject({
+            username: expect.any(String),
+            name: expect.any(String),
+            avatar_url: expect.any(String),
+          });
+        });
+      });
+  });
+  test("404: Respond with not found error msg for an non-existing end point", () => {
+    return request(app)
+      .get("/api/not-a-route")
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Not found");
+      });
+  });
+});
