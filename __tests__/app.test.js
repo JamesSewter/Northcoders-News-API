@@ -176,8 +176,6 @@ describe("POST /api/articles/:article_id/comments", () => {
       .send(newComment)
       .expect(201)
       .then(({ body: { comment } }) => {
-        console.log({ body: { comment } })
-        console.log(comment)
         expect(comment).toMatchObject({
           body: "The sixth sick sheik's sixth sheep's sick",
           votes: expect.any(Number),
@@ -200,7 +198,7 @@ describe("POST /api/articles/:article_id/comments", () => {
         const { msg } = body;
         expect(msg).toBe("Error - username and body are required");
       });
-  })
+  });
   test("400: Respond with bad request error msg for when username/body are invalid (not strings)", () => {
     const newComment = {
       username: 12312,
@@ -214,8 +212,64 @@ describe("POST /api/articles/:article_id/comments", () => {
         const { msg } = body;
         expect(msg).toBe("Error - invalid data type");
       });
-  })
-  //404 err path already tested
+  });
 });
 
-
+describe("PATCH /api/articles/:article_id", () => {
+  test("200: Updates the votes for a specified article by a value 'newVote'. Responds with the updated article.", () => {
+    const newVote = 20;
+    const voteObj = { inc_votes: newVote };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(voteObj)
+      .expect(200)
+      .then(({ body: { article } }) => {
+        expect(article).toEqual({
+          article_id: 1,
+          title: "Living in the shadow of a great man",
+          topic: "mitch",
+          author: "butter_bridge",
+          body: "I find this existence challenging",
+          created_at: "2020-07-09T20:11:00.000Z",
+          votes: 120,
+          article_img_url:
+            "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        });
+      });
+  });
+  test("400: Respond with bad request error msg for when voteObj does not have a inc_votes key and value", () => {
+    const voteObj = {};
+    return request(app)
+      .patch("/api/articles/1")
+      .send(voteObj)
+      .expect(400)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Error - invalid voteObj (no inc_votes present)");
+      });
+  });
+  test("400: Respond with bad request error msg for when voteObj's inc_votes value is invalid", () => {
+    const newVote = "ImNotANumber:(";
+    const voteObj = { inc_votes: newVote };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(voteObj)
+      .expect(400)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Error - invalid voteObj");
+      });
+  });
+  test("404: Respond with not found error msg for when article_id does not exist", () => {
+    const newVote = 20;
+    const voteObj = { inc_votes: newVote };
+    return request(app)
+      .patch("/api/articles/999")
+      .send(voteObj)
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Error - not found");
+      });
+  });
+});
