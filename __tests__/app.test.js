@@ -485,3 +485,60 @@ describe("GET /api/articles (querying with topic)", () => {
       });
   });
 });
+
+describe("GET /api/articles/:article_id (comment_count)", () => {
+  test("200: Responds with an article object with a positive comment_count", () => {
+    return request(app)
+      .get("/api/article/1")
+      .expect(200)
+      .then(({ body: { article } }) => {
+        expect(article).toMatchObject({
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: expect.any(Number),
+          body: expect.any(String),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          article_img_url: expect.any(String),
+          comment_count: 11
+        });
+      });
+  });
+  test("200: Responds with an article object with a zero comment_count", () => {
+    return request(app)
+      .get("/api/article/2")
+      .expect(200)
+      .then(({ body: { article } }) => {
+        expect(article).toMatchObject({
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: expect.any(Number),
+          body: expect.any(String),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          article_img_url: expect.any(String),
+          comment_count: 0
+        });
+      });
+  });
+  test("400: Responds with a 'bad request' error msg for an attempt to use an invalid path", () => {
+    return request(app)
+      .get("/api/article/notAnId")
+      .expect(400)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Error - bad request, invalid article_id");
+      });
+  });
+  test("404: Responds with a 'not found' error msg for an attempt to use an valid path that does not exist in the (test) database", () => {
+    return request(app)
+      .get("/api/article/999")
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Error - article not found");
+      });
+  });
+})

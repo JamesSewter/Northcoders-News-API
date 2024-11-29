@@ -7,7 +7,14 @@ exports.fetchArticle = (id) => {
       msg: "Error - bad request, invalid article_id",
     });
   }
-  const sqlQuery = `SELECT * FROM articles WHERE article_id = $1 `;
+  const sqlQuery = `SELECT articles.article_id, articles.title, articles.author, articles.body, 
+           articles.topic, articles.created_at, articles.votes, articles.article_img_url,
+           COUNT(comments.comment_id)::INT AS comment_count
+    FROM articles
+    LEFT JOIN comments
+    ON articles.article_id = comments.article_id
+    WHERE articles.article_id = $1
+    GROUP BY articles.article_id `;
   const queryValues = [id];
 
   return db.query(sqlQuery, queryValues).then(({ rows }) => {
