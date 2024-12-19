@@ -19,8 +19,7 @@ app.use(cors());
 app.use(express.json());
 //Inserted header to try and fix cors error
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:5175");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
