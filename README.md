@@ -1,6 +1,6 @@
 # Northcoders News API
 
-Hello, and welcome to my first project - Northcoders-News-API!
+Hello, and welcome to my first project - Northcoders-News-API! It is the back-end for a news website - the front-end repo can be found here: https://github.com/JamesSewter/nc-news.
 
 ## Description
 This project is a RESTful API designed to provide access to a database containing news articles, topics, user information, and comments. It includes features for interacting with the data, such as adding new comments and upvoting or downvoting articles. Comprehensive error handling has been implemented to ensure robust functionality. The development process was driven by TDD and integrated testing, ensuring reliability and precision in all features. Detailed examples of request methods for each endpoint are documented in the endpoints.json file.
