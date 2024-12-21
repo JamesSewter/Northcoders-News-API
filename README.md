@@ -36,6 +36,9 @@ To seed the databases run npm seed.
 View tests in __tests__ for both app.js and utilts. To run tests run the command run `npm run test`.
 To run the server use `npm run start`.
 
+### 6) Front-end
+View my front-end repo here: https://github.com/JamesSewter/nc-news
+
 --- 
 ## Feedback
 Please feel free to give feedback via LinkedIn [here](https://www.linkedin.com/in/james-sewter/).
