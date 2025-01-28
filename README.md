@@ -20,8 +20,8 @@ Happy reading!!!
 ### Please follow these steps: 
 
 ### 1) Please ensure that you have Node.js and PostgreSQL downloaded.
-You can do this here: [Node.js](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) and [PostgreSQL](https://www.postgresql.org/download/). Note you will need at least Node 10.9.1
-and 
+You can do this here: [Node.js](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) and [PostgreSQL](https://www.postgresql.org/download/).
+
 ### 2) Clone this repo locally and install dependencies.
 Use git clone in your terminal to access this repo locally. Then, run npm install to install the following dependencies: **Express, pg, pg-format, and dotenv. supertest and jest**, along with  **jest-sorted and jest-extended** which are necessary for integrated testing.
 
@@ -42,4 +42,4 @@ View my front-end repo here: https://github.com/JamesSewter/nc-news
 --- 
 ## Feedback
 Please feel free to give feedback via LinkedIn [here](https://www.linkedin.com/in/james-sewter/).
-This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/)
+This project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/)
